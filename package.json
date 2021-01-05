@@ -1,0 +1,10 @@
+{
+  "name": "inside-react-reactathon-2020",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "parcel": "^1.12.4",
+    "typescript": "^4.2.0-dev.20210105"
+  }
+}
