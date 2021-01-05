@@ -9,3 +9,13 @@ const App = () => (
     </p>
   </div>
 );
+
+const React = {
+  createElement: () => {},
+};
+
+const ReactDOM = {
+  render: () => {},
+};
+
+ReactDOM.render(<App />, document.querySelector('#root'));
