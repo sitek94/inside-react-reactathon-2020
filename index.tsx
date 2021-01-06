@@ -1,5 +1,6 @@
 const App = () => {
   const [name, setName] = React.useState('Maciek');
+  const [age, setAge] = React.useState(26);
 
   return (
     <div className="main">
@@ -10,6 +11,16 @@ const App = () => {
             type="text"
             value={name}
             onchange={(e) => setName(e.target.value)}
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          Age:
+          <input
+            type="number"
+            value={age}
+            onchange={(e) => setAge(e.target.value)}
           />
         </label>
       </div>
@@ -29,24 +40,28 @@ const App = () => {
  * REACT
  */
 
-let state;
+const state: any = [];
+let stateCursor = 0;
 
 const React = {
   useState: (initialState) => {
-    state = state || initialState;
-    const setState = (newState) => {
-      console.log('state was', state, 'state is', newState)
+    const localCursor = stateCursor;
+    const localState = state[localCursor] || initialState;
 
-      state = newState;
+    const setState = (newState) => {
+      console.log('state was', state, 'state is', newState);
+
+      state[localCursor] = newState;
 
       render();
     };
 
-    return [state, setState] as const;
+    stateCursor++;
+
+    return [localState, setState] as const;
   },
   createElement: (fnOrTag, props, ...children) => {
     if (typeof fnOrTag === 'function') {
-
       // Return Virtual DOM
       return {
         ...fnOrTag(props),
@@ -56,9 +71,10 @@ const React = {
       };
     }
 
-    return { 
+    return {
       tag: fnOrTag, // <- It's going to be a tag
-      props: { ...props, children } };
+      props: { ...props, children },
+    };
   },
 };
 
@@ -81,6 +97,8 @@ const ReactDOM = {
     const rootEl = document.createElement(reactElement.tag);
     const props = reactElement.props ?? {};
 
+    // Reset state cursor
+    stateCursor = 0;
     // Rerender if render method exists
     reactElement.render?.(props);
 
