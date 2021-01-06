@@ -11,11 +11,20 @@ const App = () => (
 );
 
 const React = {
-  createElement: () => {},
+  createElement: (fnOrTag, props, ...children) => {
+    if (typeof fnOrTag === 'function') {
+      /* It has to return Virtual DOM */
+      return fnOrTag();
+    }
+
+    return { tag: fnOrTag /* <- it's a tag */, props: { ...props, children } };
+  },
 };
 
 const ReactDOM = {
-  render: () => {},
+  render: (reactElement: any) => {
+    console.log(reactElement);
+  },
 };
 
 ReactDOM.render(<App />, document.querySelector('#root'));
